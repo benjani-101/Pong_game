@@ -56,12 +56,10 @@ class Game():
                 for i, paddle in enumerate(self.paddles):
                     if self.ball.at_paddle_line(paddle):
                         y_dist = abs(self.ball.ycor() - paddle.ycor())
-                        # print(y_dist)
                         if y_dist <= 35:
                             self.ball.bounce_paddle(paddle)
                         else:
                             winner_idx = abs(i - 1)
-                            print(winner_idx)
                             self.scoreboard.update(winner_idx)
                             self.live_point = False
                             if winner_idx == 0:
@@ -72,9 +70,6 @@ class Game():
                             if self.scoreboard.score[winner_idx] == 4:
                                 self.scoreboard.gameover()
 
-                # print(abs(ball.ycor()))
-                # print(SCREEN_HEIGHT / 2)
-                # print(self.screen.screensize()[1])
                 if abs(self.ball.ycor()) >= self.screen.screensize()[1]:
                     self.ball.wall_bounce()
                 # update screen

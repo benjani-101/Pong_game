@@ -37,7 +37,6 @@ class Ball(Turtle):
             return False
 
     def wall_bounce(self):
-        print("WALL BOUNCE!!!")
         if self.wall_bounce_state > 0:
             if self.heading() > 180:
                 if self.heading() < 270:
