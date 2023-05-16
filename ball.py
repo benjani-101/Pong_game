@@ -10,6 +10,7 @@ class Ball(Turtle):
         self.shapesize(stretch_len=0.5, stretch_wid=0.5)
         self.paddle_bounce_state = 0
         self.wall_bounce_state = 0
+        self.speed(0)
 
     def bounce_paddle(self, paddle):
         if self.paddle_bounce_state > 1:
