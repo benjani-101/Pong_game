@@ -4,6 +4,7 @@ from paddle import Paddle
 from scoreboard import Scoreboard
 import time
 
+
 class Game():
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT, SLEEP_TIME):
         # initialize screen
@@ -39,13 +40,16 @@ class Game():
         self.screen.exitonclick()
 
     def play_point(self):
+        # if statement to reset if game already played
         if self.scoreboard.score == [-1, -1]:
             self.scoreboard.update(0)
             self.scoreboard.update(1)
         if not self.live_point:
             self.live_point = True
+            # set ball starting state
             self.ball.setheading(self.start_heading)
             self.ball.goto(0, 0)
+            # set paddle starting states
             for paddle in self.paddles:
                 paddle.sety(0)
             while self.live_point:
@@ -54,23 +58,28 @@ class Game():
                 self.ball.paddle_bounce_state += 1
                 self.ball.wall_bounce_state += 1
                 for i, paddle in enumerate(self.paddles):
+                    # detect if ball is at paddle line
                     if self.ball.at_paddle_line(paddle):
                         y_dist = abs(self.ball.ycor() - paddle.ycor())
+                        # detect if ball has hit paddle, in which case bounce off paddle
                         if y_dist <= 35:
                             self.ball.bounce_paddle(paddle)
+                        # if ball not hit paddle, it's the end of the point
                         else:
                             winner_idx = abs(i - 1)
+                            # update scoreboard and reset ball and paddle
                             self.scoreboard.update(winner_idx)
                             self.live_point = False
+                            # ball will be directed at losing paddle at start of next turn
                             if winner_idx == 0:
                                 self.start_heading = 0
                             else:
                                 self.start_heading = 180
-
+                            # first to 4 points wins
                             if self.scoreboard.score[winner_idx] == 4:
                                 self.scoreboard.gameover()
-
-                if abs(self.ball.ycor()) >= self.screen.screensize()[1]:
+                # detect for wall bounce
+                if abs(self.ball.ycor()) >= self.screen.screensize()[1]-10:
                     self.ball.wall_bounce()
                 # update screen
                 self.screen.update()
